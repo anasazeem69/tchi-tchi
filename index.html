@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Selection Form</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Font (Comic Neue for meme vibe) -->
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Comic Neue', sans-serif;
+    }
+    /* Ensure popup stays above overlay */
+    .popup {
+      z-index: 1000;
+    }
+    .overlay {
+      z-index: 999;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#ebebeb] flex items-center justify-center p-4">
+    <div class="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl gap-8">
+    <!-- Left Image -->
+    <img src="D:\Tchi Tchi\tchi tchi.png" alt="Left Meme" class="w-full max-w-xs md:max-w-sm rounded-lg">
+    
+    <!-- Form Container -->
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Select "Lamuor" ou "Tchi Tchi"</h2>
+      <select id="characterSelect" onchange="playSound()" class="w-full p-3 mb-4 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 bg-gray-100 text-gray-700">
+        <option value="" disabled selected>Select "Lamuor" ou "Tchi Tchi</option>
+        <option value="lamour">Lamour</option>
+        <option value="chichi">Chichi</option>
+      </select>
+      <div id="nameFields" class="hidden">
+        <input type="text" id="firstName" placeholder="First Name" class="w-full p-3 mb-4 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 bg-gray-100 text-gray-700">
+        <input type="text" id="lastName" placeholder="Last Name" class="w-full p-3 mb-4 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 bg-gray-100 text-gray-700">
+        <input type="text" id="refName" placeholder="Reference Name" class="w-full p-3 mb-4 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 bg-gray-100 text-gray-700">
+      </div>
+      <button id="registerBtn" class="hidden w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition duration-300" onclick="register()">Register</button>
+    </div>
+    
+    <!-- Right Image -->
+    <img src="D:\Tchi Tchi\lamour.png" alt="Right Meme" class="w-full max-w-xs md:max-w-sm round ">
+  </div>
+
+  <!-- Overlay and Popup -->
+  <div class="overlay hidden fixed inset-0 bg-black bg-opacity-50" id="overlay"></div>
+  <div class="popup hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl shadow-2xl text-center w-full max-w-md transition-opacity duration-300 opacity-0" id="popup">
+    <p id="popupMessage" class="text-xl font-bold text-gray-800 mb-4"></p>
+    <p class="mb-6"><a href="https://www.instagram.com/reel/DIqUc35IDF0/?igsh=MWNreXpkc3VhZDJ5YQ==" target="_blank" class="text-green-500 underline hover:text-green-600 font-semibold">To know more about Tchi Tchi click here.</a></p>
+    <button onclick="closePopup()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">Close</button>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="lamourSound" src="D:\Tchi Tchi\0508.MP3"></audio>
+  <audio id="chichiSound" src="D:\Tchi Tchi\0508.MP3"></audio>
+
+  <!-- JavaScript -->
+  <script>
+    function playSound() {
+      const select = document.getElementById('characterSelect');
+      const lamourSound = document.getElementById('lamourSound');
+      const chichiSound = document.getElementById('chichiSound');
+      const nameFields = document.getElementById('nameFields');
+      const registerBtn = document.getElementById('registerBtn');
+
+      // Show name fields and register button after selection
+      nameFields.classList.remove('hidden');
+      registerBtn.classList.remove('hidden');
+
+      // Play corresponding sound
+      if (select.value === 'lamour') {
+        chichiSound.pause();
+        chichiSound.currentTime = 0;
+        lamourSound.play();
+      } else if (select.value === 'chichi') {
+        lamourSound.pause();
+        lamourSound.currentTime = 0;
+        chichiSound.play();
+      }
+    }
+
+    function register() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const refName = document.getElementById('refName').value.trim();
+      const select = document.getElementById('characterSelect').value;
+      const popup = document.getElementById('popup');
+      const popupMessage = document.getElementById('popupMessage');
+      const overlay = document.getElementById('overlay');
+
+      if (firstName === '' || lastName === '' || refName === '') {
+        alert('Please fill in all name fields');
+        return;
+      }
+
+      // Set the congratulatory message based on selection
+      if (select === 'lamour') {
+        popupMessage.textContent = 'Congratulations for being selected for Lamour to Tchi Tchi';
+      } else if (select === 'chichi') {
+        popupMessage.textContent = 'Congratulations for being selected for Tchi Tchi';
+      }
+
+      // Show the popup and overlay
+      overlay.classList.remove('hidden');
+      popup.classList.remove('hidden');
+      popup.classList.add('opacity-100');
+    }
+
+    function closePopup() {
+      const popup = document.getElementById('popup');
+      const overlay = document.getElementById('overlay');
+      popup.classList.remove('opacity-100');
+      popup.classList.add('opacity-0');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        popup.classList.add('hidden');
+      }, 300); // Match transition duration
+    }
+  </script>
+</body>
+</html>
